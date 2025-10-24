@@ -11,5 +11,8 @@ namespace Store.Project.Services.Abstractions.Products
     {
 
         Task <IEnumerable<ProductResponse>> GetAllProductsAsync ();
+        Task <ProductResponse> GetProductByIdAsync(int id);
+        Task<IEnumerable<BrandTypeResponse>> GetAllBrandsAsync();
+        Task<IEnumerable<BrandTypeResponse>> GetAllTypesAsync();
     }
 }

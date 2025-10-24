@@ -16,7 +16,7 @@ namespace Store.Project.Persistence
         public IGenericRepository<Tkey, TEntity> GetRepository<Tkey, TEntity>() where TEntity : BaseEntity<Tkey>
         {
             var key = typeof(TEntity).Name;
-            if (_repository.ContainsKey(key)) 
+            if (!_repository.ContainsKey(key)) 
             { 
                 var repository = new GenericRepository<Tkey,TEntity>(_context);
                 _repository.Add(key, repository); 
