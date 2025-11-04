@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using StackExchange.Redis;
 using Store.Project.Domain.Contracts;
 using Store.Project.Persistence.Data.Contexts;
+using Store.Project.Persistence.Repositories;
 using Store.Project.Services;
 using Store.Project.Services.Abstractions;
 using System;
@@ -25,7 +27,14 @@ namespace Store.Project.Persistence
 
            services.AddScoped<IDbInitializer, DbInitializer>();
            services.AddScoped<IUnitOfWork, UnitOfWork>();
-           
+           services.AddScoped<IBasketRepository, BasketRepository>();
+           services.AddScoped<ICacheRepository, CacheRepository>();
+
+
+            services.AddSingleton<IConnectionMultiplexer>((serviceProvider) =>
+            {
+                return ConnectionMultiplexer.Connect(configuration.GetConnectionString("Redis")!);
+            });
 
             return services;
         }
