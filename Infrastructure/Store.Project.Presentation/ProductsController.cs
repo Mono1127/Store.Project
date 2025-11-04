@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Store.Project.Presentation.Attributes;
 using Store.Project.Services.Abstractions;
 using Store.Project.Shared;
 using Store.Project.Shared.Dtos.Products;
@@ -20,9 +21,10 @@ namespace Store.Project.Presentation
         [ProducesResponseType(StatusCodes.Status200OK,Type = typeof(PaginationResponse<ProductResponse>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorDetails))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
+        [Cache(100)]
         public async Task<ActionResult<PaginationResponse<ProductResponse>>> GetAllProducts([FromQuery]ProductQueryParameters parameters)
         {
-            var result = await _serviceManager.productService.GetAllProductsAsync(parameters);
+            var result = await _serviceManager.ProductService.GetAllProductsAsync(parameters);
             return Ok(result);
         }
 
@@ -35,7 +37,7 @@ namespace Store.Project.Presentation
         public async Task<ActionResult<ProductResponse>> GetProductById(int? id )
         {
             if (id == null) return BadRequest(); 
-            var result = await _serviceManager.productService.GetProductByIdAsync(id.Value);
+            var result = await _serviceManager.ProductService.GetProductByIdAsync(id.Value);
             return Ok(result);
         }
 
@@ -45,7 +47,7 @@ namespace Store.Project.Presentation
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
         public async Task<ActionResult <BrandTypeResponse>> GetAllBrands()
         {
-            var result = await _serviceManager.productService.GetAllBrandsAsync();
+            var result = await _serviceManager.ProductService.GetAllBrandsAsync();
             if (result is null) return BadRequest();
             return Ok(result);
         }
@@ -56,7 +58,7 @@ namespace Store.Project.Presentation
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorDetails))]
         public async Task<ActionResult<BrandTypeResponse>> GetAllTypes()
         {
-            var result = await _serviceManager.productService.GetAllTypesAsync();
+            var result = await _serviceManager.ProductService.GetAllTypesAsync();
             if (result is null) return BadRequest();
             return Ok(result);
         }
