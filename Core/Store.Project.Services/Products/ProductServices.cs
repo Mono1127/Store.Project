@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Store.Project.Domain.Contracts;
 using Store.Project.Domain.Entities.Products;
+using Store.Project.Domain.Exceptions;
 using Store.Project.Services.Abstractions.Products;
 using Store.Project.Services.Specifications;
 using Store.Project.Services.Specifications.Products;
@@ -24,7 +25,6 @@ namespace Store.Project.Services.Products
 
             var spec = new ProductsWithBrandAndTypeSpecifications(parameters);
 
-
             var products = await _unitOfWork.GetRepository<int,Product>().GetAllAsync(spec);
             var result =  _mapper.Map<IEnumerable<ProductResponse>>(products);
             var specCount = new ProductCountSpecification(parameters);
@@ -36,6 +36,7 @@ namespace Store.Project.Services.Products
             var spec = new ProductsWithBrandAndTypeSpecifications(id);
 
             var product = await _unitOfWork.GetRepository<int,Product>().GetAsync(spec);
+            if (product is null) throw new ProductNotFoundException(id);
             var result = _mapper.Map<ProductResponse>(product);
             return result ;
 
