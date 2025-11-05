@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Store.Project.Domain.Exceptions;
+using Store.Project.Domain.Exceptions.Unauthorized;
 using Store.Project.Shared.ErrorModels;
 
 namespace Store.Project.Web.Middlewares
@@ -47,6 +48,7 @@ namespace Store.Project.Web.Middlewares
             {
                 NotFoundException => StatusCodes.Status404NotFound,
                 BadHttpRequestException => StatusCodes.Status400BadRequest,
+                UnauthorizedException => StatusCodes.Status401Unauthorized,
                 _ => StatusCodes.Status500InternalServerError
             };
             context.Response.StatusCode = response.StatusCode;
