@@ -29,6 +29,7 @@ namespace Store.Project.Web
             await app.ConfigureMiddlewares();
 
             app.Run();
+            //
         }
     }
 }

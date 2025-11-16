@@ -8,10 +8,12 @@ using Store.Project.Services.Abstractions;
 using Store.Project.Services.Abstractions.Auth;
 using Store.Project.Services.Abstractions.Basket;
 using Store.Project.Services.Abstractions.Orders;
+using Store.Project.Services.Abstractions.Payments;
 using Store.Project.Services.Abstractions.Products;
 using Store.Project.Services.Auth;
 using Store.Project.Services.Basket;
 using Store.Project.Services.Orders;
+using Store.Project.Services.Payments;
 using Store.Project.Services.Products;
 using Store.Project.Shared;
 using System;
@@ -27,7 +29,8 @@ namespace Store.Project.Services
         ,IBasketRepository basketRepository
         ,ICacheRepository cacheRepository,
         UserManager<AppUser> userManager,
-        IOptions<JwtOptions> options) : IServiceManager
+        IOptions<JwtOptions> options,
+        IConfiguration configuration) : IServiceManager
     {
         public IProductService ProductService { get; } = new ProductServices(_unitOfWork,_mapper);
 
@@ -35,8 +38,10 @@ namespace Store.Project.Services
 
         public ICacheService CacheService { get; } = new CacheService(cacheRepository);
 
-        public IAuthService AuthService { get; } = new AuthService(userManager, options);
+        public IAuthService AuthService { get; } = new AuthService(userManager, options,_mapper);
 
         public IOrderService OrderService {get; } = new OrderService(_unitOfWork,_mapper,basketRepository);
+
+        public IPaymentService PaymentService { get; } = new PaymentService(basketRepository, _unitOfWork,configuration,_mapper);
     }
 }
