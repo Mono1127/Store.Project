@@ -30,6 +30,14 @@ namespace Store.Project.Web.Extensions
 
             var jwtOptions = configuration.GetSection("JwtOptions").Get<JwtOptions>();
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",policy =>
+                {
+                    policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                });
+            });
+
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = "Bearer";
@@ -97,7 +105,7 @@ namespace Store.Project.Web.Extensions
             app.UseAuthentication();
             app.UseAuthorization();
 
-
+            app.UseCors("AllowAll");
 
             app.MapControllers();
 
