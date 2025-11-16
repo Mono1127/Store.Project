@@ -44,7 +44,7 @@ namespace Store.Project.Services.Payments
             var amount = subTotal + deliveryMethod.Price;
 
 
-            StripeConfiguration.ApiKey = _configuration["StripeOptions:secretKey0"];
+            //StripeConfiguration.ApiKey = _configuration["StripeOptions:secretKey0"];
 
             PaymentIntentService paymentIntentService = new PaymentIntentService();
             PaymentIntent paymentIntent;
