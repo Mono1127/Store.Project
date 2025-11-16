@@ -7,9 +7,11 @@ using Store.Project.Domain.Entities.Identity;
 using Store.Project.Services.Abstractions;
 using Store.Project.Services.Abstractions.Auth;
 using Store.Project.Services.Abstractions.Basket;
+using Store.Project.Services.Abstractions.Orders;
 using Store.Project.Services.Abstractions.Products;
 using Store.Project.Services.Auth;
 using Store.Project.Services.Basket;
+using Store.Project.Services.Orders;
 using Store.Project.Services.Products;
 using Store.Project.Shared;
 using System;
@@ -34,5 +36,7 @@ namespace Store.Project.Services
         public ICacheService CacheService { get; } = new CacheService(cacheRepository);
 
         public IAuthService AuthService { get; } = new AuthService(userManager, options);
+
+        public IOrderService OrderService {get; } = new OrderService(_unitOfWork,_mapper,basketRepository);
     }
 }

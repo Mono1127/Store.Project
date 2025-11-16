@@ -29,8 +29,18 @@ namespace Store.Project.Persistence.Repositories
        }
         public async Task<TEntity?> GetAsync(TKey key)
         {
-            return await _context.Products.Include(P => P.Brand).Include(P => P.Type).FirstOrDefaultAsync(P => P.Id == key as int?) as TEntity;
+            if (typeof(TEntity) == typeof(Product))
+            {
+                return await _context.Products
+                    .Include(p => p.Brand)
+                    .Include(p => p.Type)
+                    .FirstOrDefaultAsync(p => p.Id.Equals(key)) as TEntity;
+            }
+
+            return await _context.Set<TEntity>()
+                .FirstOrDefaultAsync(e => e.Id.Equals(key));
         }
+
         public async Task AddAsync(TEntity entity)
         {
            await _context.AddAsync(entity);

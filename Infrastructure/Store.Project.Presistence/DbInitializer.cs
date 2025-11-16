@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Store.Project.Domain.Contracts;
 using Store.Project.Domain.Entities.Identity;
+using Store.Project.Domain.Entities.Orders;
 using Store.Project.Domain.Entities.Products;
 using Store.Project.Persistence.Data.Contexts;
 using Store.Project.Persistence.Identity.Contexts;
@@ -28,6 +29,22 @@ namespace Store.Project.Persistence
             {
                 await _context.Database.MigrateAsync();
             }
+
+            if (!_context.DeliveryMethods.Any())
+            {
+                //\Infrastructure\Store.Project.Presistence\Data\DataSeeding\brands.json
+                var deliverydata = await File.ReadAllTextAsync(@"..\Infrastructure\Store.Project.Presistence\Data\DataSeeding\delivery.json");
+
+                var delivery = JsonSerializer.Deserialize<List<DeliveryMethod>>(deliverydata);
+
+                if (delivery is not null && delivery.Count > 0)
+                {
+                    await _context.DeliveryMethods.AddRangeAsync(delivery);
+
+                }
+
+            }
+
             if (!_context.ProductBrands.Any()) 
             {
                 //\Infrastructure\Store.Project.Presistence\Data\DataSeeding\brands.json
